@@ -1,6 +1,7 @@
 import struct, copy
 from hashlib import sha1
 import numpy as np
+from warnings import warn
 try:
     from .hyperloglog_const import _thresholds, _raw_estimate, _bias
 except ImportError:
@@ -31,7 +32,7 @@ class HyperLogLog(object):
         reg (numpy.array, optional): The internal state.
             This argument is for initializing the HyperLogLog from
             an existing one.
-        hashobj (optional): The hash function used. 
+        hashobj (optional): The hash function used.
             It must implements
             the `digest()` method similar to hashlib_ hash functions, such
             as `hashlib.sha1`.
@@ -46,7 +47,7 @@ class HyperLogLog(object):
 
     def _get_alpha(self, p):
         if not (4 <= p <= 16):
-            raise ValueError("p=%d should be in range [4 : 16]" % p)
+            warn("p=%d should be in range [4 : 16]" % p)
         if p == 4:
             return 0.673
         if p == 5:
@@ -169,7 +170,7 @@ class HyperLogLog(object):
     def __len__(self):
         '''
         Returns:
-            int: Get the size of the HyperLogLog as the size of 
+            int: Get the size of the HyperLogLog as the size of
                 `reg`.
         '''
         return len(self.reg)
@@ -179,7 +180,7 @@ class HyperLogLog(object):
         Check equivalence between two HyperLogLogs
 
         Args:
-            other (datasketch.HyperLogLog): 
+            other (datasketch.HyperLogLog):
 
         Returns:
             bool: True if both have the same internal state.
@@ -282,7 +283,7 @@ class HyperLogLogPlusPlus(HyperLogLog):
     2. A new small-cardinality estimation scheme
     3. Sparse representation (not implemented here)
 
-    This class has the same set of methods as 
+    This class has the same set of methods as
     :class:`datasketch.HyperLogLog`.
     '''
 
